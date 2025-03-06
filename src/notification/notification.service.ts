@@ -26,7 +26,9 @@ export class NotificationService {
         this.logger.warn(`User with ID ${userId} not found in Service A`);
         return { message: `User with ID ${userId} not found in Service A` };
       }
-      this.logger.log(`📩 Notification sent to ${user.name} (${user.email}) (${message.message})`);
+      this.logger.log(
+        `📩 Notification sent to ${user.name} (${user.email}) (${message.message})`,
+      );
       const notification = {
         userId,
         message: message.message,
@@ -44,7 +46,9 @@ export class NotificationService {
   }
 
   sendNotification(data: any): any {
-    this.logger.log(`Received notification request user new: ${data.name}, ${data.email}`);
+    this.logger.log(
+      `Received notification request user new: ${data.name}, ${data.email}`,
+    );
     return { success: true };
   }
 }

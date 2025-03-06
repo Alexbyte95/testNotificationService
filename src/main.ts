@@ -3,9 +3,20 @@ import { AppModule } from './app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { Logger } from 'nestjs-pino';
 import { join } from 'path';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const config = new DocumentBuilder()
+    .setTitle('Notification Service')
+    .setDescription('API for sending notifications')
+    .setVersion('1.0')
+    .addTag('notifications')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document); // Ruta de Swagger
 
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
@@ -30,7 +41,6 @@ async function bootstrap() {
   app.useLogger(app.get(Logger));
 
   await app.startAllMicroservices();
-
   await app.listen(process.env.PORT ?? 4000);
 }
 bootstrap();
